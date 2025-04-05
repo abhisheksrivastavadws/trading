@@ -24,20 +24,24 @@ const Login = () => {
   // const navigate = useNavigate();
 
   function onCaptchaVerify() {
+    
     if (!window.RecaptchaVerifier) {
       window.recaptchaVerifier = new RecaptchaVerifier(
         auth,
         "recaptcha-container",
+        
         {
-          size: "normal",
+          size: "invisible",
           callback: (response) => {
             onSignup();
           },
           "expired-callback": () => {},
-        }
-      );
+        },
+        auth,);
     }
+
   }
+
 
   function onSignup(event) {
     event.preventDefault();
@@ -48,6 +52,7 @@ const Login = () => {
 
     signInWithPhoneNumber(auth, phoneNumber, appVerifier)
       .then((confirmationResult) => {
+        console.log(confirmationResult)
         window.confirmationResult = confirmationResult;
         setLoading(false);
         setShowOtp(true);
@@ -55,7 +60,9 @@ const Login = () => {
       })
       .catch((error) => {
         setLoading(false);
-        toast.error(error.message);
+        toast.error("Error in sending otp",error.message);
+        console.log(error.message, error, auth, phoneNumber, appVerifier)
+        
       });
   }
 
@@ -123,6 +130,7 @@ const Login = () => {
                     />
                   )}
                 ></OtpInput>
+                <div id="recaptcha-container"></div>
                 <div className="d-flex justify-content-center">
                   <button
                     className="btn btn-primary mt-3 w-75 "
@@ -149,6 +157,7 @@ const Login = () => {
                   value={ph}
                   onChange={setPh}
                 ></PhoneInput>
+                 <div id="recaptcha-container"></div>
                 <div className="d-flex justify-content-center">
                   <button
                     className="btn btn-primary mt-3 w-75 "
@@ -163,7 +172,8 @@ const Login = () => {
                     <span>Send OTP Via SMS</span>
                   </button>
                 </div>
-                <div id="recaptcha-container" className="mt-6"></div>
+                {/* <div id="recaptcha-container" className="mt-6"></div> */}
+               
               </div>
             )}
           </div>

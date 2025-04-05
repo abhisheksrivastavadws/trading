@@ -28,6 +28,7 @@ const fetchPost = async () => {
              newData = querySnapshot.docs
                 .map((doc) => ({...doc.data(), id:doc.id }));
             setInfo(newData);    
+            console.log(newData)
 })   
 }
 let count =0
